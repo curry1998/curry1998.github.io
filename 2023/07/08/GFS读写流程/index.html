@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://curry1998.github.io/img/GFS.png">
 <meta property="article:published_time" content="2023-07-08T13:24:20.000Z">
-<meta property="article:modified_time" content="2024-03-02T14:45:02.127Z">
+<meta property="article:modified_time" content="2024-03-13T10:20:13.770Z">
 <meta property="article:author" content="curry1998">
 <meta property="article:tag" content="计算机系统">
 <meta name="twitter:card" content="summary_large_image">
@@ -327,8 +327,7 @@
 <h5 id="primary-chunk-不存在"><a href="#primary-chunk-不存在" class="headerlink" title="primary chunk 不存在"></a>primary chunk 不存在</h5><p>当Chunk服务器失效时，Chunk的副本有可能因错失了一些修改操作而过期失效。Master节点保存了每个Chunk的版本号，用来区分当前的副本和过期副本。<br>无论何时，只要Master节点和Chunk签订一个新的租约，它就增加Chunk的版本号，然后通知最新的副本。<code>Master节点和这些副本都把新的版本号记录在它们持久化存储的状态信息中。</code>这个动作发生在任何客户机得到通知以前，因此也是对这个Chunk开始写之前。如果某个副本所在的Chunk服务器正好处于失效状态，那么副本的版本号就不会被增加。Master节点让这个Chunk服务器重新启动，并且向Master节点报告它拥有的Chunk的集合以及相应的版本号的时候，就会检测出它包含过期的Chunk。如果Master节点看到一个比它记录的版本号更高的版本号，Master节点会认为它和Chunk服务器签订租约的操作失败了，因此会选择更高的版本号作为当前的版本号。</p>
 <p>Master节点在例行的垃圾回收过程中移除所有的过期失效副本。在此之前，Master节点在回复客户机的Chunk信息请求的时候，简单的认为那些过期的块根本就不存在。另外一重保障措施是，Master节点在通知客户机哪个Chunk服务器持有租约、或者指示Chunk服务器从哪个Chunk服务器进行克隆时，消息中都附带了Chunk的版本号。客户机或者Chunk服务器在执行操作时都会验证版本号以确保总是访问当前版本的数据。</p>
 <h5 id="脑裂-split-brain"><a href="#脑裂-split-brain" class="headerlink" title="脑裂 split-brain"></a>脑裂 split-brain</h5><p>脑裂，它通常是由网络分区引起的。比如说，Master无法与Primary通信，但是Primary又可以与客户端通信，这就是一种网络分区问题。网络故障是这类分布式存储系统中最难处理的问题之一。</p>
-<p>在某个时间点，Master指定了一个Primary，之后Master会一直通过定期的ping来检查它是否还存活。因为如果它挂了，Master需要选择一个新的Primary。Master发送了一些ping给Primary，并且Primary没有回应，你可能会认为Master会在那个时间立刻指定一个新的Primary。但事实是，这是一个错误的想法。为什么是一个错误的想法呢？因为可能是网络的原因导致ping没有成功，所以有可能Primary还活着，但是网络的原因导致ping失败了。但同时，Primary还可以与客户端交互，如果Master为Chunk指定了一个新的Primary，那么就会同时有两个Primary处理写请求，这两个Primary不知道彼此的存在，会分别处理不同的写请求，最终会导致有两个不同的数据拷贝。这被称为脑裂（split-brain）。</p>
-<p>所以在master ping不通primary 时需要等lease 过期后才能分配新的primary。</p>
+<p>在某个时间点，Master指定了一个Primary，之后Master会一直通过定期的ping来检查它是否还存活。因为如果它挂了，Master需要选择一个新的Primary。Master发送了一些ping给Primary，并且Primary没有回应，你可能会认为Master会在那个时间立刻指定一个新的Primary。但事实是，这是一个错误的想法。为什么是一个错误的想法呢？因为可能是网络的原因导致ping没有成功，所以有可能Primary还活着，但是网络的原因导致ping失败了。但同时，Primary还可以与客户端交互，如果Master为Chunk指定了一个新的Primary，那么就会同时有两个Primary处理写请求，这两个Primary不知道彼此的存在，会分别处理不同的写请求，最终会导致有两个不同的数据拷贝。这被称为脑裂（split-brain）。所以在master ping不通primary 时需要等lease 过期后才能分配新的primary。</p>
 
                 
               </div>
@@ -419,15 +418,12 @@
                   <article class="post-prev col-6">
                     
                     
-<<<<<<< HEAD
                       <a href="/2024/01/13/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" title="git使用指南">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">git使用指南</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
-=======
->>>>>>> 5a61f9beaec8a0c9b002560ad09ff63a25b7a33a
                   </article>
                   <article class="post-next col-6">
                     
