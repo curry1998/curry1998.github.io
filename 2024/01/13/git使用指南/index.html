@@ -25,9 +25,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://curry1998.github.io/2024/01/13/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/image-20240313113113759.png">
 <meta property="og:image" content="https://curry1998.github.io/2024/01/13/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/image-20240313122054264.png">
-<meta property="og:image" content="https://b95ko2dyic.feishu.cn/space/api/box/stream/download/asynccode/?code=YzhmMzg0Yjc1YmQ1Nzc2N2QyODQwNDhkZTMyMGQ5NjNfQXF6b0xlYTFNTEs4Nzd6TWMzdERsWU9DVndPdWpOZW5fVG9rZW46TkM4TGJPbTFHb2wyQjN4N2ZLaWM1RHVabnJmXzE3MTAzMjE1MjA6MTcxMDMyNTEyMF9WNA">
+<meta property="og:image" content="https://curry1998.github.io/2024/01/13/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/image-20240313182436583.png">
 <meta property="article:published_time" content="2024-01-13T02:54:17.000Z">
-<meta property="article:modified_time" content="2024-03-13T10:20:54.792Z">
+<meta property="article:modified_time" content="2024-03-13T10:26:41.926Z">
 <meta property="article:author" content="curry1998">
 <meta property="article:tag" content="研发工具">
 <meta name="twitter:card" content="summary_large_image">
@@ -347,7 +347,10 @@
 <li><p><code>git mergetool</code>: 使用工具来处理合并冲突</p>
 </li>
 <li><p><code>git rebase</code>: 将一系列补丁变基（rebase）为新的基线, 变基是将一系列提交按照原有次序依次应用到另一分支上，而合并是把最终结果合在一起。</p>
-<p><img src="https://b95ko2dyic.feishu.cn/space/api/box/stream/download/asynccode/?code=YzhmMzg0Yjc1YmQ1Nzc2N2QyODQwNDhkZTMyMGQ5NjNfQXF6b0xlYTFNTEs4Nzd6TWMzdERsWU9DVndPdWpOZW5fVG9rZW46TkM4TGJPbTFHb2wyQjN4N2ZLaWM1RHVabnJmXzE3MTAzMjE1MjA6MTcxMDMyNTEyMF9WNA" srcset="/img/loading.gif" lazyload alt="img"></p>
+ <img src="/2024/01/13/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/image-20240313182436583.png" srcset="/img/loading.gif" lazyload class="">
+
+
+
 <p><code>rebase</code> 的执行过程是首先找到这两个分支（即当前分支 <code>Feature</code>、 <code>rebase</code> 操作的目标基底分支 <code>Master</code>） 的最近共同祖先提交 A，然后对比当前分支相对于该祖先提交的历次提交（D 和 E），<strong>提取相应的修改并存为临时文件</strong>，然后将当前分支指向目标基底 <code>Master</code> 所指向的提交 C, <strong>最后以此作为新的基端将之前另存为临时文件的修改依序应用</strong>。</p>
 <p>Git rebase  时出现冲突，解决冲突后，<strong>git add 后执行git rebase –continue 不要 commit</strong>， git rebase 是按照一条一条执行的 commit 信息的。  <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7241678/how-to-prevent-many-git-conflicts-when-rebasing-many-commits">如何在 rebase 多次提交时防止多次 git 冲突？</a></p>
 </li>
